@@ -87,7 +87,7 @@ const {
             <div class="min-w-0 flex-1">
               <div class="mb-2 flex flex-wrap items-center gap-2 text-xs">
                 <a
-                  href={`/blog/${post.data.category}/`}
+                  href={`/blog-open-template/${post.data.category}/`}
                   class="rounded-md bg-blue-400/10 px-2 py-1 text-blue-300 transition-colors hover:text-blue-300!"
                 >
                   {post.data.category}
@@ -104,7 +104,7 @@ const {
 
               <h2 class="mb-3 text-base font-bold text-black-100 md:text-lg">
                 <a
-                  href={`/blog/${post.data.category}/${post.data.slug}/`}
+                  href={`/blog-open-template/${post.data.category}/${post.data.slug}/`}
                   class="transition group-hover:text-black-400"
                 >
                   {post.data.title}
@@ -121,7 +121,7 @@ const {
             <div class="flex flex-wrap gap-2">
               {post.data.tags?.map((tag) => (
                 <a 
-                  href={`/blog/tag/${tag}/`}
+                  href={`/blog-open-template/tag/${tag}/`}
                   class="shrink-0 self-start rounded bg-white-700 px-2 py-1 text-xs text-black-400 sm:self-center"
                 >
                   #{tag}
@@ -135,7 +135,7 @@ const {
 
     <nav class="mt-8 flex w-full items-center justify-center gap-2 text-xs md:gap-4 md:text-sm">
       <a
-        href={`/blog/${category}/`}
+        href={`/blog-open-template/${category}/`}
         class="rounded-md border border-black-700 bg-white-800 px-2 py-2 text-black-300 transition hover:bg-white-700 md:rounded-lg md:px-4"
       >
         <span class="md:hidden">First</span>
@@ -145,8 +145,8 @@ const {
       <a
         href={
           currentPage === 2
-            ? `/blog/${category}/`
-            : `/blog/${category}/page/${currentPage - 1}/`
+            ? `/blog-open-template/${category}/`
+            : `/blog-open-template/${category}/page/${currentPage - 1}/`
         }
         class="rounded-md border border-black-700 bg-white-800 px-2 py-2 text-black-300 transition hover:bg-white-700 md:rounded-lg md:px-4"
       >
@@ -160,7 +160,7 @@ const {
 
       {currentPage < totalPages && (
         <a
-          href={`/blog/${category}/page/${currentPage + 1}/`}
+          href={`/blog-open-template/${category}/page/${currentPage + 1}/`}
           class="rounded-md border border-black-700 bg-white-800 px-2 py-2 text-black-300 transition hover:bg-white-700 md:rounded-lg md:px-4"
         >
           <span class="md:hidden">Next</span>
@@ -170,7 +170,7 @@ const {
 
       {currentPage < totalPages && (
         <a
-          href={`/blog/${category}/page/${totalPages}/`}
+          href={`/blog-open-template/${category}/page/${totalPages}/`}
           class="rounded-md border border-black-700 bg-white-800 px-2 py-2 text-black-300 transition hover:bg-white-700 md:rounded-lg md:px-4"
         >
           <span class="md:hidden">Last</span>
