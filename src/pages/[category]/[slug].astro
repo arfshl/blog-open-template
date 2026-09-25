@@ -1,0 +1,174 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+
+// generate static pages for every blog post
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
+  return posts.map((post) => ({
+    params: {
+      category: post.data.category,
+      slug: post.data.slug,
+    },
+    props: {
+      post,
+    },
+  }));
+}
+
+// get the current post from the page props
+const { post } = Astro.props;
+
+// Use the custom description, or fall back to a plain-text excerpt
+const description =
+  post.data.description ||
+  post.body
+    .replace(/[#>*_`~]/g, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 160)
+    .concat("...");
+
+// render the Markdown content as an Astro component
+const { Content } = await render(post);
+---
+
+<Layout
+  title={`${post.data.title} - blog`}
+  description={description}
+>
+
+  <article>
+    <div class="mb-8">
+      <div class="mb-4 flex flex-wrap items-center gap-2 text-sm">
+        <a
+          href={`/blog-open-template/${post.data.category}/`}
+          class="rounded-md bg-blue-400/10 px-2 py-1 text-blue-300 transition-colors hover:text-blue-300!">
+          {post.data.category}
+        </a>
+
+        <span class="text-black-500">
+          {new Date(post.data.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}
+        </span>
+      </div>
+
+      <h1 class="mb-4 border-b border-black-400 pb-5 text-lg md:text-2xl font-bold text-black-100 sm:text-4xl">
+        {post.data.title}
+      </h1>
+
+      <p class="text-black-400">
+        {post.data.description}
+      </p>
+    </div>
+
+    <div class="rounded-xl border border-black-700 bg-white-800 p-6 shadow-lg">
+      <div class=" 
+      /* Markdown base styling */
+      prose prose-invert max-w-none
+
+      /* Headings */
+      [&_h1]:mt-4 [&_h1]:mb-4 [&_h1]:border-b [&_h1]:border-black-400 [&_h1]:pb-3 [&_h1]:text-2xl  md:[&_h1]:text-3xl  [&_h1]:font-bold
+      [&_h2]:mt-4 [&_h2]:mb-4 [&_h2]:border-b [&_h2]:border-black-400 [&_h2]:pb-3 [&_h2]:text-xl   md:[&_h2]:text-2xl  [&_h2]:font-bold
+      [&_h3]:mt-4 [&_h3]:mb-4 [&_h3]:border-b [&_h3]:border-black-400 [&_h3]:pb-3 [&_h3]:text-lg   md:[&_h3]:text-xl   [&_h3]:font-bold
+      [&_h4]:mt-4 [&_h4]:mb-4 [&_h4]:border-b [&_h4]:border-black-400 [&_h4]:pb-3 [&_h4]:text-base md:[&_h4]:text-lg   [&_h4]:font-bold
+      [&_h5]:mt-4 [&_h5]:mb-4 [&_h5]:border-b [&_h5]:border-black-400 [&_h5]:pb-3 [&_h5]:text-sm   md:[&_h5]:text-base [&_h5]:font-bold
+      [&_h6]:mt-4 [&_h6]:mb-4 [&_h6]:border-b [&_h6]:border-black-400 [&_h6]:pb-3 [&_h6]:text-xs   md:[&_h6]:text-sm   [&_h6]:font-bold
+
+      /* Paragraphs */
+      [&_p]:mt-4 
+      [&_p]:mb-4 
+      [&_p]:text-sm md:[&_p]:text-base
+
+      /* Lists */
+      [&_ul]:mt-4
+      [&_ol]:mt-4
+      [&_ul]:list-disc
+      [&_ol]:list-decimal
+      [&_ul]:pl-6
+      [&_ol]:pl-6
+      [&_li]:mb-4
+      [&_ul]:text-sm
+      md:[&_ul]:text-base
+      [&_ol]:text-sm
+      md:[&_ol]:text-base
+      [&_li]:text-sm
+      md:[&_li]:text-base
+
+      /* Images */
+      [&_img]:block 
+      [&_img]:mt-10 
+      [&_img]:mb-10 
+      [&_img]:w-200
+      [&_img]:max-w-full 
+      [&_img]:mx-auto
+
+      /* Tables */
+      [&_table]:my-6 [&_table]:w-full [&_table]:min-w-175 [&_table]:border-collapse
+      [&_thead]:bg-white-700
+      [&_th]:border [&_th]:border-black-600 [&_th]:px-4 [&_th]:py-3 
+      [&_th]:text-left [&_th]:font-bold [&_th]:text-black-100
+      [&_td]:border [&_td]:border-black-700 [&_td]:px-4 [&_td]:py-3 
+      [&_td]:text-black-300
+
+      /* Code blocks */
+      [&_pre.astro-code]:my-6 [&_pre.astro-code]:overflow-x-auto [&_pre.astro-code]:rounded-lg [&_pre.astro-code]:border 
+      [&_pre.astro-code]:border-black-700 [&_pre.astro-code]:text-white! [&_pre.astro-code]:bg-black! [&_pre.astro-code]:p-4 [&_pre.astro-code]:text-sm 
+      [&_pre.astro-code]:leading-6
+
+      /* Links */
+    [&_a]:text-blue-400 [&_a]:underline [&_a]:underline-offset-2 [&_a]:transition-colors [&_a:hover]:text-blue-300 
+      [&_a]:target-blank [&_a]:rel-noopener
+
+      /* Heading anchor links ( behavior: 'wrap' ) */
+      [&_h1>a]:text-inherit [&_h1>a]:no-underline [&_h1>a:hover]:text-black-400
+      [&_h2>a]:text-inherit [&_h2>a]:no-underline [&_h2>a:hover]:text-black-400
+      [&_h3>a]:text-inherit [&_h3>a]:no-underline [&_h3>a:hover]:text-black-400
+      [&_h4>a]:text-inherit [&_h4>a]:no-underline [&_h4>a:hover]:text-black-400
+      [&_h5>a]:text-inherit [&_h5>a]:no-underline [&_h5>a:hover]:text-black-400
+      [&_h6>a]:text-inherit [&_h6>a]:no-underline [&_h6>a:hover]:text-black-400
+
+      /* Checklist  */
+      /* Delete browser defaults */
+      [&_input[type='checkbox']]:appearance-none
+      [&_input[type='checkbox']]:w-4
+      [&_input[type='checkbox']]:h-4
+      [&_input[type='checkbox']]:mr-2
+      [&_input[type='checkbox']]:align-middle
+      [&_input[type='checkbox']]:border
+      [&_input[type='checkbox']]:border-black-400
+      [&_input[type='checkbox']]:rounded-sm
+
+      /* Add color even the checkbox is unedited (disabled status) */
+      [&_input[type='checkbox']:checked]:bg-blue-400
+      [&_input[type='checkbox']:checked]:border-blue-400
+      
+      /* Manually add checkmark icons */
+      [&_input[type='checkbox']:checked]:bg-[url('data:image/svg+xml;utf8,%3Csvg%20viewBox=%220%200%2016%2016%22%20fill=%22white%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d=%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22/%3E%3C/svg%3E')]
+      /* checkmark with gray-900 color */
+      /*[&_input[type='checkbox']:checked]:bg-[url('data:image/svg+xml;utf8,%3Csvg%20viewBox=%220%200%2016%2016%22%20fill=%22%23111827%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d=%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22/%3E%3C/svg%3E')] */
+      [&_input[type='checkbox']:checked]:bg-center
+      [&_input[type='checkbox']:checked]:bg-no-repeat
+
+      /* Blockquotes */
+      [&_blockquote]:my-6
+      [&_blockquote]:border-l-4
+    [&_blockquote]:border-blue-400
+    [&_blockquote]:bg-black
+      [&_blockquote]:px-4
+      [&_blockquote]:py-3
+    [&_blockquote]:text-white
+      [&_blockquote]:italic
+      [&_blockquote_p]:m-0
+      ">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Layout>

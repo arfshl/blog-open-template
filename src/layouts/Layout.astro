@@ -1,0 +1,70 @@
+---
+import "../../styles/global.css";
+
+// define the component props
+interface Props {
+  title: string;
+  description?: string;
+}
+
+// get props passed to the component
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html class="bg-white text-black">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width"/>
+
+    <title>{title}</title>
+
+    {description && (
+      <meta name="description" content={description}/>
+    )}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">  
+  </head>
+
+  <body class="min-w-0 bg-white font-sans text-black">
+    <header>
+      <nav class="mx-auto flex w-[calc(100%-2rem)] max-w-6xl items-center justify-between py-5">
+        <a href="/blog-open-template/" class="text-base md:text-lg font-bold text-white-100 transition hover:text-white-100">
+          Title
+        </a>
+
+        <div class="flex items-center gap-3 text-xs md:text-sm md:gap-4">
+          <a href="" class="text-white-400 transition hover:text-white-100">
+           
+          </a>
+
+          <a href="" class="text-white-400 transition hover:text-white-100">
+            
+          </a>
+
+          <a href="" target="_blank" rel="noopener noreferrer" class="text-white-400 transition hover:text-white-100">
+            
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="mx-auto w-[calc(100%-2rem)] max-w-6xl py-10 sm:py-14">
+      <slot />
+    </main>
+
+    <footer class="mx-auto w-[calc(100%-2rem)] max-w-6xl py-8 text-center text-xs text-white-400 md:text-sm">
+       <p>Free version of arfshl/blog codebase, licensed under BSD-3-Clause License</p>
+
+       <p class="mt-2">
+          <a
+            href=""
+            class="underline underline-offset-2 transition-colors hover:text-white-100"
+           >
+            
+          </a>
+        </p>
+</footer>
+  </body>
+</html>

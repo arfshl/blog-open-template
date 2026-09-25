@@ -1,0 +1,170 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+// Get all blog posts
+const posts = await getCollection("blog");
+
+// Sort posts from newest to oldest
+const sortedPosts = posts.sort(
+  (a, b) =>
+    new Date(b.data.date).getTime() -
+    new Date(a.data.date).getTime(),
+);
+
+// Get the three latest posts for the featured section
+const latestPosts = sortedPosts.slice(0, 3);
+
+const postsPerPage = 10;
+
+// Get the remaining posts for the paginated section
+const remainingPosts = sortedPosts.slice(3);
+
+// Get the posts displayed on the first pagination page
+const firstPagePosts = remainingPosts.slice(0, postsPerPage);
+
+// Check whether additional pagination pages are needed
+const hasMorePages = remainingPosts.length > postsPerPage;
+---
+
+<Layout title="Blog Open Template" description="Blog Open Template">
+
+  <section class="mb-12">
+    <div class="mb-6 flex items-center justify-between">
+      <h2 class="text-xl font-bold text-black-100">
+        Latest
+      </h2>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      {latestPosts.map((post) => (
+        <article class="group rounded-xl border border-black-700 bg-white-800 p-6 shadow-lg">
+          <div class="mb-4 flex flex-wrap items-center gap-2 text-xs">
+            <a
+              href={`/blog-open-template/${post.data.category}/`}
+              class="rounded-md bg-blue-400/10 px-2 py-1 text-blue-300 transition-colors hover:text-blue-300!"
+            >
+              {post.data.category}
+            </a>
+
+            <span class="text-black-500">
+              {new Date(post.data.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+          </div>
+
+          <h3 class="mb-3 text-base font-bold text-black-100 md:text-lg">
+            <a
+              href={`/blog-open-template/${post.data.category}/${post.data.slug}/`}
+              class="transition group-hover:text-black-400"
+            >
+              {post.data.title}
+            </a>
+          </h3>
+
+          {post.data.description && (
+            <p class="text-xs text-black-400 md:text-sm">
+              {post.data.description}
+            </p>
+          )}
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            {(post.data.tags ?? []).map((tag) => (
+              <a
+                href={`/blog-open-template/tag/${tag}/`}
+                class="rounded bg-white-700 px-2 py-1 text-xs text-black-400"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <div class="mb-6 flex items-center justify-between">
+      <h2 class="text-xl font-bold text-black-100">
+        All articles
+      </h2>
+
+      <span class="text-sm text-black-500">
+        {remainingPosts.length} posts
+      </span>
+    </div>
+
+    {firstPagePosts.length > 0 ? (
+      <div class="space-y-4">
+        {firstPagePosts.map((post) => (
+          <article class="group rounded-xl border border-black-700 bg-white-800 p-5 shadow-lg sm:p-6">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div class="min-w-0 flex-1">
+                <div class="mb-2 flex flex-wrap items-center gap-2 text-xs">
+                  <a
+                    href={`/blog-open-template/${post.data.category}/`}
+                    class="rounded-md bg-blue-400/10 px-2 py-1 text-blue-300 transition-colors hover:text-blue-300!"
+                  >
+                    {post.data.category}
+                  </a>
+
+                  <span class="text-black-500">
+                    {new Date(post.data.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
+                </div>
+
+                <h3 class="mb-2 text-base font-bold text-black-100 md:text-lg">
+                  <a
+                    href={`/blog-open-template/${post.data.category}/${post.data.slug}/`}
+                    class="transition group-hover:text-black-400"
+                  >
+                    {post.data.title}
+                  </a>
+                </h3>
+
+                <p class="text-xs leading-6 text-black-400 md:text-sm">
+                  {post.data.description}
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-2 self-start sm:self-center">
+                {(post.data.tags ?? []).map((tag) => (
+                  <a
+                    href={`/blog-open-template/tag/${tag}/`}
+                    class="rounded bg-white-700 px-2 py-1 text-xs text-black-400"
+                  >
+                    #{tag}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="rounded-xl border border-dashed border-black-700 bg-white-800 p-10 text-center text-xs md:text-sm">
+        <p class="text-black-500">
+          No new article.
+        </p>
+      </div>
+    )}
+
+    {hasMorePages && (
+      <nav class="mt-10 flex items-center justify-center">
+        <a
+          href="/blog-open-template/page/1/"
+          class="rounded-lg border border-black-700 bg-white-800 px-4 py-2 text-xs text-black-300 transition hover:bg-white-700 md:text-sm"
+        >
+          {"More Articles"}
+        </a>
+      </nav>
+    )}
+  </section>
+</Layout>

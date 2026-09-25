@@ -1,0 +1,161 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+// Generate a page for every blog category
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
+  // Get unique categories from all posts
+  const categories = [...new Set(posts.map((post) => post.data.category))];
+
+  return categories.map((category) => {
+    const categoryPosts = posts
+      .filter((post) => post.data.category === category)
+      .sort(
+        (a, b) =>
+          new Date(b.data.date).getTime() -
+          new Date(a.data.date).getTime(),
+      );
+
+    return {
+      params: {
+        category,
+      },
+      props: {
+        category,
+        posts: categoryPosts,
+        currentPage: 1,
+        totalPages: Math.ceil(categoryPosts.length / 6),
+      },
+    };
+  });
+}
+
+const { category, posts, currentPage, totalPages } = Astro.props;
+const postsPerPage = 6;
+const pagePosts = posts.slice(0, postsPerPage);
+---
+
+<Layout
+  title={`Category: ${category} - blog`}
+  description={`Articles in ${category} category - blog`}
+>
+  <section>
+    <div class="mb-8">
+      <a
+        class="text-xl font-bold text-black-900"
+        href={`/blog-open-template/${category}/`}
+      >
+        Categories: {category}
+      </a>
+    </div>
+
+    <div class="space-y-4">
+      {pagePosts.map((post) => (
+        <article class="group rounded-xl border border-black-700 bg-white-800 p-5 shadow-lg sm:p-6">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="min-w-0 flex-1">
+              <div class="mb-2 flex flex-wrap items-center gap-2 text-xs">
+                <a
+                  href={`/blog-open-template/${post.data.category}/`}
+                  class="rounded-md bg-blue-400/10 px-2 py-1 text-blue-300 transition-colors hover:text-blue-300!"
+                >
+                  {post.data.category}
+                </a>
+
+                <span class="text-black-500">
+                  {new Date(post.data.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
+
+              <h2 class="mb-3 text-base font-bold text-black-100 md:text-lg">
+                <a
+                  href={`/blog-open-template/${post.data.category}/${post.data.slug}/`}
+                  class="transition group-hover:text-black-400"
+                >
+                  {post.data.title}
+                </a>
+              </h2>
+
+              {post.data.description && (
+                <p class="text-xs text-black-400 md:text-sm">
+                  {post.data.description}
+                </p>
+              )}
+            </div>
+
+            <div class="flex flex-wrap gap-2 self-start sm:self-center">
+              {(post.data.tags ?? []).map((tag) => (
+                <a
+                  href={`/blog-open-template/tag/${tag}/`}
+                  class="rounded bg-white-700 px-2 py-1 text-xs text-black-400"
+                >
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    {
+      totalPages > 1 && (
+        <nav class="mt-8 flex w-full items-center justify-center gap-2 text-xs md:gap-4 md:text-sm">
+          {currentPage > 1 && (
+            <a
+              href={`/blog-open-template/${category}/`}
+              class="rounded-md border border-black-700 bg-white-800 px-2 py-2 text-black-300 transition hover:bg-white-700 md:rounded-lg md:px-4"
+            >
+              <span class="md:hidden">First</span>
+              <span class="hidden md:inline"> First</span>
+            </a>
+          )}
+
+          {currentPage > 1 && (
+            <a
+              href={
+                currentPage === 2
+                  ? `/blog-open-template/${category}/`
+                  : `/blog-open-template/${category}/page/${currentPage - 1}/`
+              }
+              class="rounded-md border border-black-700 bg-white-800 px-2 py-2 text-black-300 transition hover:bg-white-700 md:rounded-lg md:px-4"
+            >
+              <span class="md:hidden">Previous</span>
+              <span class="hidden md:inline"> Previous</span>
+            </a>
+          )}
+
+          <span class="whitespace-nowrap text-black-500">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          {currentPage < totalPages && (
+            <a
+              href={`/blog-open-template/${category}/page/${currentPage + 1}/`}
+              class="rounded-md border border-black-700 bg-white-800 px-2 py-2 text-black-300 transition hover:bg-white-700 md:rounded-lg md:px-4"
+            >
+              <span class="md:hidden">Next</span>
+              <span class="hidden md:inline"> Next</span>
+            </a>
+          )}
+
+          {currentPage < totalPages && (
+            <a
+              href={`/blog-open-template/${category}/page/${totalPages}/`}
+              class="rounded-md border border-black-700 bg-white-800 px-2 py-2 text-black-300 transition hover:bg-white-700 md:rounded-lg md:px-4"
+            >
+              <span class="md:hidden">Last</span>
+              <span class="hidden md:inline"> Last</span>
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </section>
+</Layout>
