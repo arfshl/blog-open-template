@@ -110,11 +110,21 @@ const { Content } = await render(post);
       [&_img]:mx-auto
 
       /* Tables */
-      [&_table]:my-6 [&_table]:w-full [&_table]:min-w-175 [&_table]:border-collapse
+      [&_table]:my-6 
+      [&_table]:border-collapse
       [&_thead]:bg-white-700
       [&_th]:border [&_th]:border-black-600 [&_th]:px-4 [&_th]:py-3 
       [&_th]:text-left [&_th]:font-bold [&_th]:text-black-100
       [&_td]:border [&_td]:border-black-700 [&_td]:px-4 [&_td]:py-3 
+      [&_td]:text-black-300
+      [&_table]:block
+      [&_table]:max-w-full
+      [&_table]:overflow-x-auto
+      [&_table]:whitespace-nowrap  
+      [&_thead]:bg-white-700
+      [&_th]:border-black-600
+      [&_th]:text-black-100
+    [&_td]:border-gray-700
       [&_td]:text-black-300
 
       /* Code blocks */
