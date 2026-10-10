@@ -176,6 +176,20 @@ const { Content } = await render(post);
     [&_blockquote]:text-white
       [&_blockquote]:italic
       [&_blockquote_p]:m-0
+
+      /* Inline code defined with backticks */
+      [&_:not(pre)>code]:rounded-md
+      [&_:not(pre)>code]:bg-[#000000]
+      [&_:not(pre)>code]:border
+      [&_:not(pre)>code]:border-white
+      [&_:not(pre)>code]:px-1.5
+      [&_:not(pre)>code]:py-0.5
+      [&_:not(pre)>code]:text-xs
+      md:[&_:not(pre)>code]:text-sm
+      [&_:not(pre)>code]:text-white
+      [&_:not(pre)>code]:before:content-['']
+      [&_:not(pre)>code]:after:content-['']
+      [&_:not(pre)>code]:font-['JetBrains_Mono']
       ">
         <Content />
       </div>

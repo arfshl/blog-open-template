@@ -26,6 +26,10 @@ This page is used to test the complete Markdown styling of the blog.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
+This is an inline code
+
+`Lorem ipsum dolor sit amet`
+
 ---
 
 ## 1. Headings
