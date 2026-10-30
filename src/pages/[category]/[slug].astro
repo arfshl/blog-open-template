@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
+import Giscus from "../../plugins/giscus.astro";
 
 // generate static pages for every blog post
 export async function getStaticPaths() {
@@ -195,4 +196,6 @@ const { Content } = await render(post);
       </div>
     </div>
   </article>
+  <div style="height: 70px;"></div>
+  <Giscus />
 </Layout>
