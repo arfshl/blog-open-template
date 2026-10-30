@@ -8,4 +8,4 @@ This is, mainly used with [pagescms](https://pagescms.org/) but can also used wi
 
 Using [Giscus](https://giscus.app/) for commenting platform, click [here](https://giscus.app/) to set up your own, and put generated `<script>` on `src/plugins/giscus.astro`
 
-Preview: https://github.com/arfshl/blog-open-template
+Preview: https://arfshl.github.io/blog-open-template
